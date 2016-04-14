@@ -6,6 +6,8 @@
 
 using namespace std;
 
+
+
 class BTreeNode
 {
 	public:
@@ -19,22 +21,6 @@ class BTreeNode
 /************************************************************************************************
 / Class BTree. Left Child will be to R/r nodes. Right Child will be to Y/y nodes.
 ************************************************************************************************/
-
-class Tester
-{
-public:
-    BTreeNode *Root;
-    BTree();
-    bool test_add_word_to_tree(string word);
-    bool test_is_word_in_tree(string word);
-    //void Inorder(BTreeNode *ptr);
-    //int maxDepth(BTreeNode* node);
-private:
-    bool add_node(BTreeNode *parent, char Data);
-
-};
-
-
 class BTree
 {
     public:
@@ -54,6 +40,74 @@ BTree::BTree()
     Root = new BTreeNode;
     Root->Data='-';
     Root->Lchild=Root->Rchild=NULL;
+}
+
+class Tester
+{
+public:
+	 bool test_add_word_to_tree(string word, BTree tree);
+	 bool test1 (vector<string>words, BTree tree);
+	 bool test2 (string sequence, BTree tree);
+	 //bool test_search_tree(string word);
+	 bool test_in_order(BTree ptr);
+	 bool test_maxDepth(BTree node, BTreeNode * child);
+};
+
+
+Tester::Tester()
+{
+
+}
+
+bool Tester::test1 (vector<string>words, BTree tree)
+
+{
+	bool flag = true;
+	for (int i=0; i<words.size(); i++)
+	{
+		if (tree.is_word_in_tree(words.at(i)))
+		{
+			flag = false;
+		}
+	}
+	return flag;
+
+	//here testing that all the words that i used to set up the tree appear when i search for them.
+	//returns true if so
+	//otherwise returns false
+}
+
+bool test2 (string sequence, BTree tree)
+
+{
+	bool flag = false;
+
+		if (tree.is_word_in_tree(sequence))
+		{
+			flag = true;
+		}
+
+	return flag;
+}
+
+bool test_maxDepth(BTree node, BTreeNode * child)
+{
+	if (node.maxDepth(child)>11)
+	{
+		return false;
+}
+	return true;
+
+	//the max depth should not be more than 10. if it is, then it returns false, otherwise it returns true
+}
+
+bool test_add_word_to_tree(string word, BTree tree)
+{
+	  tree.add_word_to_tree(word);
+	  return tree.is_word_in_tree(word);
+	  //if you search add a word that shouldn't be there e.g. a word that contains something other than r,R,y,Y eg. hello
+	  //and then you search for this word  it should be there, and so should return false\
+	  //whereas if you enter a valid word and then search for it then it should return true
 }
 
 /// function will determine if the word is in the tree returning true, else returns false
@@ -137,8 +191,6 @@ int main()
     char * genome_file_name="input1.txt";      //make certain to place this file in the correct folder. Do not change path.
     if(!get_words(genome_file_name,words))     //will get the words as binary
         return 1;
-    	cout<<"1";
-
 
     //1. Create a tree --> transforming the vector of words into the tree
     BTree *b;
@@ -147,9 +199,6 @@ int main()
         b->add_word_to_tree(words[i]);
 
     /** TEST 1 -- IS THE TREE CORRECTLY SET UP AND POPULATED **/
-
-
-
 
 
     vector<string> reads;
@@ -162,19 +211,6 @@ int main()
     for(int i=0;i<reads.size();i++)
         is_in[i]=b->is_word_in_tree(reads[i]);
 
-    *is_in= new bool [words.size()];
-
-    for (int i=0; i<reads.size();i++)
-    	is_in[i]=b->is_word_in_tree(words[i]);
-
-	//write_vector_to_screen(vector<string> words);
-
-
-	if (maxDepth(b)>11)
-	{
-		cout<<"It works";
-			//	return true;
-	}
     /** TEST 2 -- IS THE TREE CORRECTLY SEARCHED **/
 
 
